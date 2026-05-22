@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Planta Rosa Online — Калькулятор зарплаты</title>
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;background:#f5f4f0;color:#1a1a18;min-height:100vh;padding:16px}
+.wrap{max-width:480px;margin:0 auto}
+.brand{display:flex;align-items:center;gap:8px;margin-bottom:20px;padding-bottom:16px;border-bottom:1px solid #e0ded6}
+.brand-dot{width:8px;height:8px;border-radius:50%;background:#D4537E;flex-shrink:0}
+.brand-name{font-size:20px;font-weight:600;color:#1a1a18}
+.brand-sub{font-size:13px;color:#888780;margin-left:2px}
+.section{background:#fff;border:1px solid #e0ded6;border-radius:14px;padding:16px 20px;margin-bottom:12px}
+.sec-title{font-size:11px;font-weight:600;color:#888780;text-transform:uppercase;letter-spacing:.07em;margin-bottom:12px}
+.row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0ede6}
+.row:last-child{border-bottom:none}
+.row-left{flex:1;padding-right:12px}
+.row-left label{font-size:14px;color:#1a1a18;display:block}
+.row-left .hint{font-size:12px;color:#888780;margin-top:3px}
+.inp-wrap{display:flex;align-items:center;gap:6px;flex-shrink:0}
+input[type=number]{width:105px;font-size:14px;text-align:right;padding:7px 10px;border:1px solid #d3d1c7;border-radius:9px;background:#f5f4f0;color:#1a1a18;-moz-appearance:textfield}
+input[type=number]::-webkit-outer-spin-button,input[type=number]::-webkit-inner-spin-button{-webkit-appearance:none}
+input[type=number]:focus{outline:none;border-color:#D4537E;background:#fff}
+.unit{font-size:13px;color:#888780;white-space:nowrap}
+.scale-block{margin-top:12px}
+.scale-lbl{font-size:12px;color:#888780;margin-bottom:8px}
+.sc-row{display:flex;align-items:center;gap:8px;margin-bottom:6px;font-size:13px}
+.sc-name{min-width:60px;color:#888780}
+.sc-bar-wrap{flex:1;height:5px;background:#f0ede6;border-radius:3px;overflow:hidden}
+.sc-bar{height:100%;border-radius:3px;transition:width .3s}
+.sc-pct{min-width:36px;text-align:right;color:#888780;font-size:12px}
+.tier-pill{display:inline-block;font-size:11px;padding:2px 9px;border-radius:20px;font-weight:600;margin-left:6px}
+.t1{background:#FBEAF0;color:#72243E}.t2{background:#EEEDFE;color:#3C3489}.t3{background:#FAEEDA;color:#633806}.t4{background:#FAECE7;color:#712B13}
+.tog-row{display:flex;align-items:center;justify-content:space-between;padding:10px 0;border-bottom:1px solid #f0ede6}
+.tog-row:last-child{border-bottom:none}
+.tog-row .bonus{font-size:12px;color:#993556;font-weight:600;margin-top:3px}
+.tog{display:flex;gap:6px}
+.tog button{font-size:13px;padding:6px 16px;border:1px solid #d3d1c7;border-radius:9px;background:#f5f4f0;color:#888780;cursor:pointer;-webkit-tap-highlight-color:transparent;transition:all .15s}
+.tog button.yes{background:#FBEAF0;border-color:#D4537E;color:#72243E;font-weight:600}
+.result-wrap{background:#fff;border:1px solid #e0ded6;border-radius:14px;padding:20px;margin-bottom:12px}
+.res-label{font-size:13px;color:#888780;margin-bottom:4px}
+.res-total{font-size:34px;font-weight:700;color:#1a1a18;margin-bottom:16px}
+.b-row{display:flex;justify-content:space-between;padding:7px 0;border-bottom:1px solid #f0ede6;font-size:14px}
+.b-row:last-child{border-bottom:none;margin-bottom:4px}
+.b-name{color:#888780}
+.b-val{font-weight:600;color:#1a1a18}
+.b-val.pink{color:#993556}
+.diff-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:14px}
+.diff-card{background:#f5f4f0;border-radius:10px;padding:12px;text-align:center}
+.diff-card .v{font-size:15px;font-weight:700}
+.diff-card .l{font-size:12px;color:#888780;margin-top:3px}
+.pos{color:#1D9E75}.neg{color:#E24B4A}
+.formula-note{font-size:12px;color:#aaa89e;margin-top:14px;line-height:1.6;padding-top:14px;border-top:1px solid #f0ede6}
+.footer{text-align:center;font-size:12px;color:#b4b2a9;margin-top:8px;padding-bottom:8px}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+<div class="brand">
+  <div class="brand-dot"></div>
+  <span class="brand-name">Planta Rosa Online</span>
+  <span class="brand-sub">· калькулятор зарплаты</span>
+</div>
+
+<div class="section">
+  <div class="sec-title">Параметры отдела</div>
+  <div class="row">
+    <div class="row-left"><label>Выручка отдела за месяц</label></div>
+    <div class="inp-wrap"><input type="number" id="revenue" value="50000000" step="500000"><span class="unit">₽</span></div>
+  </div>
+  <div class="row">
+    <div class="row-left">
+      <label>Всего смен команды за месяц</label>
+      <div class="hint">Суммарно по всем сотрудникам</div>
+    </div>
+    <div class="inp-wrap"><input type="number" id="totalShifts" value="60" min="1"></div>
+  </div>
+  <div class="row">
+    <div class="row-left"><label>Ставка общей базы</label></div>
+    <div class="inp-wrap"><input type="number" id="baseRate" value="1.0" step="0.1" min="0.1" max="5"><span class="unit">%</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">Мои данные <span id="tierPill" class="tier-pill t1">до 1 млн</span></div>
+  <div class="row">
+    <div class="row-left">
+      <label>Мои смены за месяц</label>
+      <div class="hint" id="myShareHint">Моя доля: 25,0% от смен команды</div>
+    </div>
+    <div class="inp-wrap"><input type="number" id="myShifts" value="15" min="1"></div>
+  </div>
+  <div class="row">
+    <div class="row-left">
+      <label>Личные продажи за месяц</label>
+      <div class="hint" id="rateHint">Ставка: 2,0% (до 1 млн ₽)</div>
+    </div>
+    <div class="inp-wrap"><input type="number" id="personal" value="1000000" step="100000"><span class="unit">₽</span></div>
+  </div>
+  <div class="scale-block">
+    <div class="scale-lbl">Вилка комиссии с личных продаж</div>
+    <div class="sc-row"><span class="sc-name">до 1 млн</span><div class="sc-bar-wrap"><div class="sc-bar" id="bar1" style="background:#D4537E"></div></div><span class="sc-pct">2,0%</span></div>
+    <div class="sc-row"><span class="sc-name">1–3 млн</span><div class="sc-bar-wrap"><div class="sc-bar" id="bar2" style="background:#7F77DD"></div></div><span class="sc-pct">2,3%</span></div>
+    <div class="sc-row"><span class="sc-name">3–5 млн</span><div class="sc-bar-wrap"><div class="sc-bar" id="bar3" style="background:#EF9F27"></div></div><span class="sc-pct">2,6%</span></div>
+    <div class="sc-row"><span class="sc-name">от 5 млн</span><div class="sc-bar-wrap"><div class="sc-bar" id="bar4" style="background:#D85A30"></div></div><span class="sc-pct">3,0%</span></div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="sec-title">KPI и бонусы</div>
+  <div class="tog-row">
+    <div><label style="font-size:14px">Скорость ответа &lt; 5 мин</label><div class="bonus">+5 000 ₽</div></div>
+    <div class="tog"><button id="k1y" class="yes" onclick="setK('k1',true)">ДА</button><button id="k1n" onclick="setK('k1',false)">НЕТ</button></div>
+  </div>
+  <div class="tog-row">
+    <div><label style="font-size:14px">NPS ≥ 98%</label><div class="bonus">+5 000 ₽</div></div>
+    <div class="tog"><button id="k2y" class="yes" onclick="setK('k2',true)">ДА</button><button id="k2n" onclick="setK('k2',false)">НЕТ</button></div>
+  </div>
+  <div class="tog-row">
+    <div><label style="font-size:14px">Лидер NPS месяца</label><div class="bonus">+10 000 ₽</div></div>
+    <div class="tog"><button id="k3y" onclick="setK('k3',true)">ДА</button><button id="k3n" class="yes" onclick="setK('k3',false)">НЕТ</button></div>
+  </div>
+  <div class="row" style="margin-top:8px">
+    <div class="row-left"><label>Реактивация 6–12 мес.</label><div class="hint">+3 000 ₽ за клиента</div></div>
+    <div class="inp-wrap"><input type="number" id="r1" value="1" min="0"><span class="unit">кл.</span></div>
+  </div>
+  <div class="row">
+    <div class="row-left"><label>Реактивация 12+ мес.</label><div class="hint">+4 500 ₽ за клиента</div></div>
+    <div class="inp-wrap"><input type="number" id="r2" value="1" min="0"><span class="unit">кл.</span></div>
+  </div>
+</div>
+
+<div class="result-wrap">
+  <div class="res-label">Итого к выплате</div>
+  <div class="res-total" id="totalOut">160 000 ₽</div>
+  <div class="b-row"><span class="b-name">Комиссия с личных продаж</span><span class="b-val pink" id="bComm">20 000 ₽</span></div>
+  <div class="b-row"><span class="b-name">Доля от выручки отдела</span><span class="b-val" id="bBase">122 500 ₽</span></div>
+  <div class="b-row"><span class="b-name">KPI-бонусы</span><span class="b-val" id="bKpi">10 000 ₽</span></div>
+  <div class="b-row"><span class="b-name">Реактивация клиентов</span><span class="b-val" id="bReact">7 500 ₽</span></div>
+  <div class="diff-grid">
+    <div class="diff-card"><div class="v" id="dOld">150 000 ₽</div><div class="l">Старая схема (1,2%)</div></div>
+    <div class="diff-card"><div class="v pos" id="dDiff">+10 000 ₽</div><div class="l">Разница к старой схеме</div></div>
+  </div>
+  <div class="formula-note" id="formulaNote"></div>
+</div>
+
+<div class="footer">Planta Rosa Online · Калькулятор мотивации</div>
+
+</div>
+<script>
+const kpi={k1:true,k2:true,k3:false};
+function setK(k,v){
+  kpi[k]=v;
+  document.getElementById(k+'y').className=v?'yes':'';
+  document.getElementById(k+'n').className=v?'':'yes';
+  calc();
+}
+function fmt(n){return Math.round(n).toLocaleString('ru-RU')+' ₽'}
+function calc(){
+  const rev=+document.getElementById('revenue').value||0;
+  const totalShifts=+document.getElementById('totalShifts').value||1;
+  const myShifts=+document.getElementById('myShifts').value||0;
+  const baseRate=(+document.getElementById('baseRate').value||1)/100;
+  const personal=+document.getElementById('personal').value||0;
+  const r1=+document.getElementById('r1').value||0;
+  const r2=+document.getElementById('r2').value||0;
+  const share=myShifts/totalShifts;
+  const sharePct=(share*100).toFixed(1);
+  document.getElementById('myShareHint').textContent='Моя доля: '+sharePct+'% от смен команды ('+myShifts+' из '+totalShifts+')';
+  const tiers=[1000000,3000000,5000000];
+  const rates=[0.02,0.023,0.026,0.03];
+  let comm=0,p=personal;
+  if(p<=tiers[0]) comm=p*rates[0];
+  else if(p<=tiers[1]) comm=tiers[0]*rates[0]+(p-tiers[0])*rates[1];
+  else if(p<=tiers[2]) comm=tiers[0]*rates[0]+(tiers[1]-tiers[0])*rates[1]+(p-tiers[1])*rates[2];
+  else comm=tiers[0]*rates[0]+(tiers[1]-tiers[0])*rates[1]+(tiers[2]-tiers[1])*rates[2]+(p-tiers[2])*rates[3];
+  const base=(rev-personal)*baseRate*share;
+  const kpiBon=(kpi.k1?5000:0)+(kpi.k2?5000:0)+(kpi.k3?10000:0);
+  const reactBon=r1*3000+r2*4500;
+  const total=comm+base+kpiBon+reactBon;
+  const old=rev*0.012*share;
+  const diff=total-old;
+  document.getElementById('totalOut').textContent=fmt(total);
+  document.getElementById('bComm').textContent=fmt(comm);
+  document.getElementById('bBase').textContent=fmt(base);
+  document.getElementById('bKpi').textContent=fmt(kpiBon);
+  document.getElementById('bReact').textContent=fmt(reactBon);
+  document.getElementById('dOld').textContent=fmt(old);
+  const dEl=document.getElementById('dDiff');
+  dEl.textContent=(diff>=0?'+':'')+Math.round(diff).toLocaleString('ru-RU')+' ₽';
+  dEl.className='v '+(diff>=0?'pos':'neg');
+  let tier=0;
+  if(personal>5000000) tier=3;
+  else if(personal>3000000) tier=2;
+  else if(personal>1000000) tier=1;
+  const tNames=['до 1 млн','1–3 млн','3–5 млн','от 5 млн'];
+  const tCls=['t1','t2','t3','t4'];
+  const rNames=['2,0%','2,3%','2,6%','3,0%'];
+  const pill=document.getElementById('tierPill');
+  pill.textContent=tNames[tier]; pill.className='tier-pill '+tCls[tier];
+  document.getElementById('rateHint').textContent='Ставка: '+rNames[tier]+' ('+tNames[tier]+')';
+  document.getElementById('bar1').style.width=Math.min(100,Math.round(personal/1000000*100))+'%';
+  document.getElementById('bar2').style.width=(personal>1000000?Math.min(100,Math.round((personal-1000000)/2000000*100)):0)+'%';
+  document.getElementById('bar3').style.width=(personal>3000000?Math.min(100,Math.round((personal-3000000)/2000000*100)):0)+'%';
+  document.getElementById('bar4').style.width=(personal>5000000?Math.min(100,Math.round((personal-5000000)/3000000*100)):0)+'%';
+  document.getElementById('formulaNote').textContent='Расчёт базы: ('+Math.round(rev).toLocaleString('ru-RU')+' − '+Math.round(personal).toLocaleString('ru-RU')+') × '+(baseRate*100).toFixed(1)+'% × '+myShifts+' смен ÷ '+totalShifts+' смен команды = '+fmt(base);
+}
+document.querySelectorAll('input').forEach(el=>el.addEventListener('input',calc));
+calc();
+</script>
+</body>
+</html>
